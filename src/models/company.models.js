@@ -10,7 +10,7 @@ const companySchema = new Schema(
     },
     description: {
       type: String,
-      required: required,
+      required: true,
       trim: true,
     },
     logo: {

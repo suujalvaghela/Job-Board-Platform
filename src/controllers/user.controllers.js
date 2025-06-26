@@ -23,7 +23,7 @@ const registerUser = asyncHandler(async (req, res) => {
   // upload on cloudinary
   // make user object - for db
   // again validation
-  // finally res
+  // finally res 
 
   const { userName, email, fullName, password, role } = req.body;
 

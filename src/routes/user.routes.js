@@ -6,6 +6,7 @@ import {
 } from "../controllers/user.controllers.js";
 import { verifyJwt } from "../middlewares/auth.middleware.js";
 import { upload } from "../middlewares/multer.middleware.js";
+
 const router = Router();
 
 router.route("/register").post(
@@ -18,4 +19,4 @@ router.route("/register").post(
 router.route("/login").post(logInUser);
 router.route("/logout").post(verifyJwt, logOutUser);
 
-export default router;
+export default router; 
