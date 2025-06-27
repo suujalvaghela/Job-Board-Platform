@@ -1,6 +1,6 @@
-import mongoose from "mongoose";
-import { User } from "./user.models";
-import { Job } from "./job.models";
+import mongoose, { Schema } from "mongoose";
+import { User } from "./user.models.js";
+import { Job } from "./job.models.js";
 
 const applicationSchema = new Schema(
   {
@@ -24,7 +24,7 @@ const applicationSchema = new Schema(
       default: "applied",
     },
     appliedAt: {
-      type: Date,  
+      type: Date,
       default: Date.now,
     },
   },

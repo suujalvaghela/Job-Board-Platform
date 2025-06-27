@@ -1,6 +1,6 @@
 import mongoose, { Schema } from "mongoose";
-import { User } from "./user.models";
-import { Company } from "./company.models";
+import { User } from "./user.models.js";
+import { Company } from "./company.models.js";
 
 const jobSchemas = new Schema(
   {
