@@ -1,1 +1,1 @@
-export const DB_NAME = "JOB-PLATFORM"
+export const DB_NAME = "JOBPLATFORM"

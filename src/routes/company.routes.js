@@ -5,8 +5,8 @@ import { isRecruiterOrAdmin } from "../middlewares/role.middleware.js";
 
 const router = Router()
 
-router.route("/").post(verifyJwt, createCompany);
-router.route("/").get(getAllCompanies)
+router.route("/createcompany").post(verifyJwt, createCompany);
+router.route("/getallcompanies").get(getAllCompanies)
 
 router.route("/:companyId").get(getCompanyById)
 router.route("/:companyId").put(verifyJwt, isRecruiterOrAdmin, updateCompany)

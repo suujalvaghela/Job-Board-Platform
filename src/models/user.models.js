@@ -30,12 +30,12 @@ const userSchema = new Schema(
       required: [true, "password must be required"],
     },
     coverImage: {
-      type: String,
+      type: String, 
       required: true,
     },
     role: {
       type: String,
-      enum: ["seeker", "employer", "admin"],
+      enum: ["seeker", "employer"],
       default: "seeker",
     },
     refreshToken: {
@@ -48,7 +48,7 @@ const userSchema = new Schema(
 );
 
 userSchema.pre("save", async function (next) {
-  if (!this.modified("password")) return next();
+  if (!this.isModified("password")) return next();
 
   this.password = await bcrypt.hash(this.password, 10);
   return next();

@@ -5,11 +5,11 @@ import { isRecruiterOrAdmin } from "../middlewares/role.middleware.js";
 
 const router = Router();
 
-router.route("/").post(verifyJwt, createJob)
-router.route("/").get(getAllJobs)
+router.route("/createjob").post(verifyJwt, createJob)
+router.route("/getalljobs").get(getAllJobs)
 
 router.route("/:jobId").get(getJobById)
 router.route("/:jobId").put(verifyJwt, isRecruiterOrAdmin, updateJob)
 router.route("/:jobId").delete(verifyJwt, isRecruiterOrAdmin, deleteJob)
 
-export default router
+export default router 

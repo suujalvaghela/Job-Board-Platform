@@ -10,13 +10,13 @@ import { upload } from "../middlewares/multer.middleware.js";
 const router = Router();
 
 router.route("/register").post(
-  upload.fields({
+  upload.fields([{
     name: "coverImage",
     maxCount: 1,
-  }),
+  }]),
   registerUser
 );
-router.route("/login").post(logInUser);
+router.route("/login").post(upload.none(), logInUser);
 router.route("/logout").post(verifyJwt, logOutUser);
 
 export default router; 
