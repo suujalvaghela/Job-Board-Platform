@@ -43,25 +43,25 @@ const registerUser = asyncHandler(async (req, res) => {
     throw new ApiError(401, "User is already existing");
   }
 
-  let coverImagePath;
+  // let coverImagePath;
 
-  if (
-    req.files &&
-    Array.isArray(req.files.coverImage) &&
-    req.files.coverImage.length > 0
-  ) {
-    coverImagePath = req.files.coverImage[0].path;
-  }
+  // if (
+  //   req.files &&
+  //   Array.isArray(req.files.coverImage) &&
+  //   req.files.coverImage.length > 0
+  // ) {
+  //   coverImagePath = req.files.coverImage[0].path;
+  // }
 
-  if (!coverImagePath) {
-    throw new ApiError(401, "Path of image must be required");
-  }
+  // // if (!coverImagePath) {
+  // //   throw new ApiError(401, "Path of image must be required");
+  // // }
 
-  const coverImage = await uploadOnCloudinary(coverImagePath);
+  // const coverImage = await uploadOnCloudinary(coverImagePath);
 
-  if (!coverImage?.url) {
-    throw new ApiError(401, "image is not uploaded on cloudinary");
-  }
+  // if (!coverImage?.url) {
+  //   throw new ApiError(401, "image is not uploaded on cloudinary");
+  // }
 
   const user = await User.create({
     userName: userName.toLowerCase(),
@@ -69,7 +69,7 @@ const registerUser = asyncHandler(async (req, res) => {
     fullName,
     password,
     role,
-    coverImage: coverImage.url,
+    // coverImage: coverImage.url,
   });
 
   const newUser = await User.findById(user._id).select(

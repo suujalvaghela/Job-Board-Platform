@@ -1,7 +1,7 @@
 export const isRecruiterOrAdmin = (req, res, next) => {
     const { role } = req.user;
 
-    if (role === "recruiter" || role === "admin") {
+    if (role === "employer") {
         return next();
     }
 

@@ -12,4 +12,4 @@ router.route("/:jobId").get(getJobById)
 router.route("/:jobId").put(verifyJwt, isRecruiterOrAdmin, updateJob)
 router.route("/:jobId").delete(verifyJwt, isRecruiterOrAdmin, deleteJob)
 
-export default router 
+export default router  

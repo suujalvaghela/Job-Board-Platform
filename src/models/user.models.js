@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 
 const userSchema = new Schema(
   {
-    userName: {
+    userName: { 
       type: String,
       required: true,
       unique: true,
@@ -31,7 +31,7 @@ const userSchema = new Schema(
     },
     coverImage: {
       type: String, 
-      required: true,
+      // required: true,
     },
     role: {
       type: String,

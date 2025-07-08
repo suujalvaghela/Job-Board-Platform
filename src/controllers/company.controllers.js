@@ -5,20 +5,20 @@ import { Company } from "../models/company.models.js";
 
 const createCompany = asyncHandler(async (req, res) => {
     const { name, description, logo, website } = req.body
-    if ([name, description, logo, website].some((field) => !field || field.trim() === '')) {
+    if ([name, description, website].some((field) => !field || field.trim() === '')) {
         throw new ApiError(400, "all field must be required")
     }
 
     const existing = await Company.findOne({
-        $or: [{ name }, { logo }, { website }],
+        $or: [{ name }, { website }],
     });
 
     if (existing) {
         throw new ApiError(400, "Company with same name/logo/website already exists");
     }
 
-    const newCompany = await Job.create({
-        title,
+    const newCompany = await Company.create({
+        name,
         description,
         logo,
         website,

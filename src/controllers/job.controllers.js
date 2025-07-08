@@ -2,25 +2,20 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { Job } from "../models/job.models.js";
+import { Company } from "../models/company.models.js";
 
-const createJob = asyncHandler(async (req, res) => {
-    const {
-        title,
-        discription,
-        type,
-        location,
-        salaryRange,
-        company,
-        expiresAt,
-    } = req.body;
+const createJob = asyncHandler(async (req, res) => { 
+    const { title, discription, type, location, salaryRange, company } = req.body;
 
-    if (
-        [title, discription, type, salaryRange, company].some(
-            (field) => !field || field.trim() === ""
-        )) {
+    if ([title, discription, type, salaryRange, company].some(field => !field || field.trim() === "")) {
         throw new ApiError(400, "All required fields must be provided");
     }
 
+    // ✅ Check if company ID is valid
+    const existingCompany = await Company.findById(company);
+    if (!existingCompany) {
+        throw new ApiError(404, "Company not found");
+    }
 
     const job = await Job.create({
         title,
@@ -29,19 +24,16 @@ const createJob = asyncHandler(async (req, res) => {
         location,
         salaryRange,
         company,
-        user: req.user._id,
-        expiresAt,
+        user: req.user._id
     });
 
     if (!job) {
-        throw new ApiError(501, "Job not created yet")
+        throw new ApiError(501, "Job not created yet");
     }
 
-    return res
-        .status(200)
-        .json(new ApiResponse(201, job, "Job Created Successfully!"))
+    return res.status(201).json(new ApiResponse(201, job, "Job Created Successfully!"));
+});
 
-})
 
 const getAllJobs = asyncHandler(async (req, res) => {
     const jobs = await Job.find()
