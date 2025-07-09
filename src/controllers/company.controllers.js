@@ -31,7 +31,7 @@ const createCompany = asyncHandler(async (req, res) => {
 
     return res
         .status(201)
-        .json(new ApiResponse(200, createCompany, "Company created successfully"))
+        .json(new ApiResponse(200, newCompany, "Company created successfully"))
 
 })
 

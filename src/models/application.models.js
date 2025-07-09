@@ -1,6 +1,7 @@
 import mongoose, { Schema } from "mongoose";
 import { User } from "./user.models.js";
 import { Job } from "./job.models.js";
+import { Company } from "./company.models.js";
 
 const applicationSchema = new Schema(
   {
@@ -14,7 +15,12 @@ const applicationSchema = new Schema(
       ref: Job,
       required: true,
     },
-    resumeUrl: {
+    company: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: Company,
+      required: true,
+    },
+    resume: {
       type: String,
       required: true,
     },

@@ -2,7 +2,10 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { User } from "../models/user.models.js";
-import { uploadOnCloudinary } from "../utils/cloudinary.js";
+import { Job } from "../models/job.models.js";
+import { Application } from "../models/application.models.js";
+import { Company } from "../models/company.models.js";
+// import { uploadOnCloudinary } from "../utils/cloudinary.js";
 
 const generateAccessAndRefreshTokens = async (userId) => {
   const user = await User.findById(userId);
@@ -174,8 +177,50 @@ const logOutUser = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, {}, "User loggedOut successfully"));
 });
 
+const deleteUserProfile = asyncHandler(async (req, res) => {
+  const userId = req.user._id;
+
+  const user = await User.findById(userId);
+  if (!user) {
+    throw new ApiError(404, "User not found");
+  }
+
+  // 1️⃣ Find all companies owned by user
+  const userCompanies = await Company.find({ user: userId }).select("_id");
+  const companyIds = userCompanies.map(c => c._id);
+
+  // 2️⃣ Find all jobs for these companies
+  const jobs = await Job.find({ company: { $in: companyIds } }).select("_id");
+  const jobIds = jobs.map(j => j._id);
+
+  // 3️⃣ Delete applications for these jobs
+  await Application.deleteMany({ job: { $in: jobIds } });
+
+  // 4️⃣ Delete applications made directly by the user
+  await Application.deleteMany({ user: userId });
+
+  // 5️⃣ Delete jobs
+  await Job.deleteMany({ company: { $in: companyIds } });
+
+  // 6️⃣ Delete companies
+  await Company.deleteMany({ user: userId });
+
+  // 7️⃣ Delete user
+  await User.findByIdAndDelete(userId);
+
+  // clear cookies
+  const option = { httpOnly: true, secure: true, sameSite: "Strict" };
+  return res
+    .status(200)
+    .clearCookie("accessToken", option)
+    .clearCookie("refreshToken", option)
+    .json(new ApiResponse(200, {}, "User and all related data deleted successfully"));
+});
+
+
 export {
   registerUser,
   logInUser,
-  logOutUser
+  logOutUser,
+  deleteUserProfile
 };

@@ -2,12 +2,13 @@ import { Router } from "express";
 import { applyForJob, getMyApplications, getApplicationsForJob, updateApplicationStatus } from "../controllers/application.controllers.js"
 import { verifyJwt } from "../middlewares/auth.middleware.js";
 import { isRecruiterOrAdmin } from "../middlewares/role.middleware.js"
+import { upload } from "../middlewares/multer.middleware.js";
 
 const router = Router()
 
-router.route("/applyforjob").post(verifyJwt, applyForJob)
+router.route("/:jobId/applyforjob").post(verifyJwt, upload.single("resume"), applyForJob)
 router.route("/getmyapplication").get(verifyJwt, getMyApplications)
-router.route("/:id").get(verifyJwt, isRecruiterOrAdmin, getApplicationsForJob)
-router.route("/:id/status").put(verifyJwt, isRecruiterOrAdmin, updateApplicationStatus)
+router.route("/:jobId").get(verifyJwt, isRecruiterOrAdmin, getApplicationsForJob)
+router.route("/:id").put(verifyJwt, isRecruiterOrAdmin, updateApplicationStatus)
 
 export default router
